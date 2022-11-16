@@ -27,13 +27,15 @@ const main = async () => {
     await mongoose.connect(DB, {
       useNewUrlParser: true,
       useFindAndModify: false,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
     });
     consola.success("Database connected ...")
     // Start application listening for request from server.
-    app.listen(PORT, () => consola.success(`Server started on port ${PORT}`));
+    // app.listen(PORT, () => consola.success(`Server started on port ${PORT}`));
   } catch (err) {
     consola.error(`Unable to start the server \n${err.message}`);
   }
 };
+
+app.listen(PORT, () => consola.success(`Server started on port ${PORT}`));
 
