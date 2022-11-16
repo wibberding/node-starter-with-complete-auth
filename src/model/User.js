@@ -60,9 +60,16 @@ UserSchema.methods.generateJWT = async function () {
     id: this._id,
   }
   return await sign(payload, SECRET, { expiresIn: "1 day"});
-}
+};
 
 UserSchema.methods.generatePasswordReset = function () {
   this.resetPasswordExpiresIn = Date.now() + 36000000;
   this.resetPasswordToken = randomBytes(20).toString("hex");
-}
+};
+
+UserSchema.methods.getUserInfo = function () {
+  return pick(this, ["_id", "username", "email", "name"]);
+};
+
+const User = model("users", UserSchema);
+export default User;

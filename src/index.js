@@ -4,12 +4,19 @@ import express from "express";
 import mongoose from "mongoose";
 import { json } from "body-parser";
 
+
+// Router Exports
+import userApis from "./apis/users";
+
 //Iitialize express application
 const app = express();
 
 // Apply application middlewares
 app.use(cors());
 app.use(json());
+
+// Routes
+app.use("/users", userApis);
 
 // Import application constants.
 import { DB, PORT } from "./constants";
