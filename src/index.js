@@ -3,7 +3,6 @@ import consola from "consola";
 import express from "express";
 import mongoose from "mongoose";
 import passport from "passport";
-import { json } from "body-parser";
 
 // Router Imports
 import userApis from "./apis/users";
@@ -16,7 +15,7 @@ const app = express();
 
 // Apply application middlewares
 app.use(cors());
-app.use(json({ type: 'application/json' }));
+app.use(express.json());
 app.use(passport.initialize());
 
 // Routes
