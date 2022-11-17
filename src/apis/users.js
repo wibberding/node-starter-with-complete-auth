@@ -1,6 +1,7 @@
 import { User } from "../model";
 import { Router } from "express";
 import { randomBytes } from "crypto";
+import { DOMAIN } from "../constants";
 import sendMail from "../functions/email-sender";
 import { RegisterValidations } from "../validators";
 import Validator from "../middleware/validator-middleware";
@@ -50,7 +51,7 @@ router.post(
       let html = `
         <h1>Hello ${user.username}</h1>
         <p>Please click the following link to verify your account</p>
-        <a href="/users/verify-now/${user.verificationCode}">Verify Now</a>
+        <a href="${DOMAIN}/users/verify-now/${user.verificationCode}">Verify Now</a>
       `;
       sendMail(user.email, "Verify Account", "Please verify your account.", html);
       return res.status(201).json({
