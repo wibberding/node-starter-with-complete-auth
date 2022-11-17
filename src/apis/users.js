@@ -3,10 +3,13 @@ import { User } from "../model";
 import { Router } from "express";
 import { randomBytes } from "crypto";
 import { DOMAIN } from "../constants";
+import { userAuth } from "../middleware/auth-guard";
 import sendMail from "../functions/email-sender";
 import { AuthenticateValidations, RegisterValidations } from "../validators";
 import Validator from "../middleware/validator-middleware";
 import { flatten } from "lodash";
+
+import passport from "passport";
 
 const router = Router();
 
@@ -137,6 +140,19 @@ router.post('/api/authenticate', AuthenticateValidations, Validator, async(req, 
       // message: "An error occurred."
     })
   }
-})
+});
+
+/**
+ * @description To get authenticated user's profile
+ * @api /users/api/authenticate
+ * @access Private
+ * @type GET
+ */
+
+router.get('/api/authenticate', userAuth, async (res, req) => {
+  return res.status(200).json({
+    user: req.user,
+  })
+} );
 
 export default router;
