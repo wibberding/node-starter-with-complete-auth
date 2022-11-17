@@ -1,10 +1,12 @@
+import { join } from "path";
 import { User } from "../model";
 import { Router } from "express";
 import { randomBytes } from "crypto";
 import { DOMAIN } from "../constants";
 import sendMail from "../functions/email-sender";
-import { RegisterValidations } from "../validators";
+import { AuthenticateValidations, RegisterValidations } from "../validators";
 import Validator from "../middleware/validator-middleware";
+import { flatten } from "lodash";
 
 const router = Router();
 
@@ -21,7 +23,8 @@ router.post(
   Validator, 
   async (req, res) => {
    try {
-      let {username, email } = req.body();
+    console.log("req.body", req.body);
+      let {username, email } = req.body;
       // Check if the username is taken.
       let user = await User.findOne({ username });
       if(user) {
@@ -61,10 +64,79 @@ router.post(
    } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "An error occurred."
+      message: error.message,
+      // message: "An error occurred."
     })
    }
   }
 );
+
+/**
+ * @description To verify email of a new user account
+ * @api /users/verify-now/:verificationCode
+ * @access Public <Only via email>
+ * @type GET
+ */
+
+router.get('/verify-now/:verificationCode', async( req, res ) => {
+  try {
+    let { verificationCode } = req.params;
+    let user = await User.findOne({ verificationCode });
+    if(!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized access. Invalid verification code."
+      })
+    }
+    user.verified = true;
+    user.verificationCode = undefined;
+    await user.save();
+    return res.sendFile(join(__dirname, "../templates/verification-success.html"));
+
+  } catch (error) {
+    return res.sendFile(join(__dirname, "../templates/errors.html"));
+  }
+})
+
+/**
+ * @description To verify a user and get auth token
+ * @api /users/api/authenticate
+ * @access Public
+ * @type POST
+ */
+
+router.post('/api/authenticate', AuthenticateValidations, Validator, async(req, res) => {
+  try {
+    let { username, password } = req.body;
+    let user = await User.findOne({ username });
+    if(!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Username not found."
+      })
+    };
+
+    if (!(await user.comparePassword(password))) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect password."
+      })
+    };
+
+    let token = await user.generateJWT();
+    return res.status(200).json({
+      success: true,
+      user: user.getUserInfo(),
+      token: `Bearer ${token}`,
+      message: "Hurray! You are now logged in."
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+      // message: "An error occurred."
+    })
+  }
+})
 
 export default router;

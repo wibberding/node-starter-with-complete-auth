@@ -4,23 +4,21 @@ import express from "express";
 import mongoose from "mongoose";
 import { json } from "body-parser";
 
-
 // Router Exports
 import userApis from "./apis/users";
 
-//Iitialize express application
+// Initialize express application
 const app = express();
 
 // Apply application middlewares
 app.use(cors());
-app.use(json());
+app.use(json({ type: 'application/json' }));
 
 // Routes
 app.use("/users", userApis);
 
 // Import application constants.
 import { DB, PORT } from "./constants";
-console.log(DB);
 const main = async () => {
   try {
     // Connect with the database.
@@ -37,5 +35,4 @@ const main = async () => {
 };
 
 main();
-// app.listen(PORT, () => consola.success(`Server started on port ${PORT}`));
 
