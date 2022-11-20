@@ -6,7 +6,6 @@ import {SECRET as secretOrKey} from "../constants";
 const opts = {
   secretOrKey,
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-
 };
 
 passport.use(

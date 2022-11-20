@@ -1,6 +1,5 @@
 import { validationResult } from "express-validator";
 
-
 const ValidationMiddleware = (req,res,next) => {
   let errors = validationResult(req);
   if(!errors.isEmpty()) {
