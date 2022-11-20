@@ -149,7 +149,7 @@ router.post('/api/authenticate', AuthenticateValidations, Validator, async(req, 
  * @type GET
  */
 
-router.get('/api/authenticate', userAuth, async (res, req) => {
+router.get('/api/authenticate', userAuth, async (req, res) => {
   return res.status(200).json({
     user: req.user,
   })
