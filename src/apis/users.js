@@ -220,7 +220,7 @@ router.get('/reset-password-now/:resetPasswordToken', async (req, res) => {
 });
 
 /**
- * @description To get authenticated user's profile
+ * @description To reset password and send email about it.
  * @api /users/api/reset-password-now
  * @access Restricted via email
  * @type POST
