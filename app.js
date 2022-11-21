@@ -1,6 +1,7 @@
 import cors from "cors";
 import consola from "consola";
 import express from "express";
+import { engine } from 'express-handlebars';
 import mongoose from "mongoose";
 import passport from "passport";
 
@@ -13,13 +14,26 @@ require("./middleware/passport-middleware");
 // Initialize express application
 const app = express();
 
+// Adds Handlebars
+app.engine('.hbs', engine({extname: '.hbs'}));
+app.set('view engine', '.hbs');
+app.set('views', './views');
+
+
 // Apply application middlewares
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
 
-// Routes
+//  Require routes
+var homeRoutes = require('./routes/home');
+var notificationRoutes = require('./routes/notifications');
+
+//  Define routes...
+app.use('/', homeRoutes);
+app.use('/', notificationRoutes);
 app.use("/users", userApis);
+
 
 // Import application constants.
 import { DB, PORT } from "./constants";
