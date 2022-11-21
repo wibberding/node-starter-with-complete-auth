@@ -5,7 +5,7 @@ import { randomBytes } from "crypto";
 import { DOMAIN } from "../constants";
 import { userAuth } from "../middleware/auth-guard";
 import sendMail from "../functions/email-sender";
-import { AuthenticateValidations, RegisterValidations, ResetPassword } from "../validators";
+import { AuthenticateValidations, RegisterValidations, ResetPassword } from "../validators/user-validators";
 import Validator from "../middleware/validator-middleware";
 // import { flatten } from "lodash";
 
@@ -94,10 +94,12 @@ router.get('/verify-now/:verificationCode', async( req, res ) => {
     user.verified = true;
     user.verificationCode = undefined;
     await user.save();
-    return res.sendFile(join(__dirname, "../templates/verification-success.html"));
+    return res.render('notifications/verification-success');
+    // return res.sendFile(join(__dirname, "../templates/verification-success.html"));
 
   } catch (error) {
-    return res.sendFile(join(__dirname, "../templates/errors.html"));
+    return res.render('notifications/error');
+    // return res.sendFile(join(__dirname, "../templates/errors.html"));
   }
 })
 
@@ -213,9 +215,11 @@ router.get('/reset-password-now/:resetPasswordToken', async (req, res) => {
         message: "Password reset token is invalid or has expired.",
       })
     };
-    return res.sendFile(join(__dirname, "../templates/password-reset.html"));
+    return res.render('notifications/password-reset');
+    // return res.sendFile(join(__dirname, "../templates/password-reset.html"));
   } catch (error) {
-    return res.sendFile(join(__dirname, "../templates/errors.html"));
+    return res.render('notifications/error');
+    // return res.sendFile(join(__dirname, "../templates/errors.html"));
   }
 });
 

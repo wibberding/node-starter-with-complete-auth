@@ -28,10 +28,13 @@ app.use(passport.initialize());
 //  Require routes
 var homeRoutes = require('./routes/home');
 var notificationRoutes = require('./routes/notifications');
+var sessionRoutes = require('./routes/session');
+
 
 //  Define routes...
 app.use('/', homeRoutes);
 app.use('/', notificationRoutes);
+app.use('/session', sessionRoutes);
 app.use("/users", userApis);
 
 
