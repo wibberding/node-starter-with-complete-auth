@@ -1,5 +1,5 @@
 import { join } from "path";
-import { User } from "../model";
+import User from "../models/User";
 import { Router } from "express";
 import { randomBytes } from "crypto";
 import { DOMAIN } from "../constants";
@@ -7,9 +7,9 @@ import { userAuth } from "../middleware/auth-guard";
 import sendMail from "../functions/email-sender";
 import { AuthenticateValidations, RegisterValidations, ResetPassword } from "../validators";
 import Validator from "../middleware/validator-middleware";
-import { flatten } from "lodash";
+// import { flatten } from "lodash";
 
-import passport from "passport";
+// import passport from "passport";
 
 const router = Router();
 

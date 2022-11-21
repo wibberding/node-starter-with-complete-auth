@@ -1,5 +1,5 @@
 import passport from "passport";
-import {User} from "../model";
+import User from "../models/User";
 import {Strategy, ExtractJwt} from "passport-jwt"
 import {SECRET as secretOrKey} from "../constants";
 

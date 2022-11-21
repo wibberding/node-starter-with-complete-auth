@@ -2,7 +2,7 @@
   "name": "full-auth-starter-project",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node -r esm",
     "dev": "nodemon -r esm ."

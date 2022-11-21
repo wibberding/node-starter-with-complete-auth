@@ -8,6 +8,6 @@ const ValidationMiddleware = (req,res,next) => {
     })
   }
   next();
-}
+};
 
 export default ValidationMiddleware;
