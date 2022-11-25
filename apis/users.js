@@ -33,7 +33,9 @@ router.post(
       if(user) {
         return res.status(400).json({
           success: false,
-          message: "Username is already taken."
+          errors: [{
+            msg: "Username is already taken."
+          }],
         })
       }
 
@@ -42,7 +44,9 @@ router.post(
       if(user) {
         return res.status(400).json({
           success: false,
-          message: "Email is already registered. Did you forget the password? Try resetting it."
+          errors: [{
+            msg: "Email is already registered. Did you forget the password? Try resetting it."
+          }],
         })
       }
 
@@ -62,13 +66,14 @@ router.post(
       sendMail(user.email, "Verify Account", "Please verify your account.", html);
       return res.status(201).json({
         success: true,
-        message: "Hurray! Your account is created. Please verify your email address."
+        msg: "Hurray! Your account is created. Please verify your email address."
       })
    } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
-      // message: "An error occurred."
+      errors: [{
+        msg: error.message
+      }],
     })
    }
   }
@@ -88,18 +93,18 @@ router.get('/verify-now/:verificationCode', async( req, res ) => {
     if(!user) {
       return res.status(401).json({
         success: false,
-        message: "Unauthorized access. Invalid verification code."
+        errors: [{
+          msg: "Unauthorized access. Invalid verification code."
+        }],
       })
     }
     user.verified = true;
     user.verificationCode = undefined;
     await user.save();
     return res.render('notifications/verification-success');
-    // return res.sendFile(join(__dirname, "../templates/verification-success.html"));
 
   } catch (error) {
     return res.render('notifications/error');
-    // return res.sendFile(join(__dirname, "../templates/errors.html"));
   }
 })
 
@@ -117,14 +122,18 @@ router.post('/api/authenticate', AuthenticateValidations, Validator, async(req, 
     if(!user) {
       return res.status(404).json({
         success: false,
-        message: "Username not found."
+        errors: [{
+          msg: "Username not found."
+        }],
       })
     };
 
     if (!(await user.comparePassword(password))) {
       return res.status(401).json({
         success: false,
-        message: "Incorrect password."
+        errors: [{
+          msg: "Incorrect password."
+        }],
       })
     };
 
@@ -138,8 +147,9 @@ router.post('/api/authenticate', AuthenticateValidations, Validator, async(req, 
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: error.message,
-      // message: "An error occurred."
+      errors: [{
+        msg: error.message
+      }],
     })
   }
 });
@@ -170,7 +180,9 @@ router.put('/api/reset-password', ResetPassword, Validator, async (req,res) => {
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User with this email is not found."
+        errors: [{
+          msg: "User with this email is not found."
+        }],
       });
     };
     user.generatePasswordReset();
@@ -183,10 +195,6 @@ router.put('/api/reset-password', ResetPassword, Validator, async (req,res) => {
       <a href="${DOMAIN}/users/reset-password-now/${user.resetPasswordToken}">Verify Now</a>
     `;
     sendMail(user.email, "Verify Account", "Please verify your account.", html);
-    return res.status(201).json({
-      success: true,
-      message: "Hurray! Your account is created. Please verify your email address."
-    })
     return res.status(200).json({
       success: true,
       message: "A password reset link has been sent to your email."
@@ -194,7 +202,9 @@ router.put('/api/reset-password', ResetPassword, Validator, async (req,res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "An error occurred."
+      errors: [{
+        msg: "An error occurred."
+      }],
     });
   }
 });
@@ -212,14 +222,14 @@ router.get('/reset-password-now/:resetPasswordToken', async (req, res) => {
     if (!user) {
       return res.status(401).json({
         success: false,
-        message: "Password reset token is invalid or has expired.",
+        errors: [{
+          msg: "Password reset token is invalid or has expired."
+        }],
       })
     };
     return res.render('notifications/password-reset');
-    // return res.sendFile(join(__dirname, "../templates/password-reset.html"));
   } catch (error) {
     return res.render('notifications/error');
-    // return res.sendFile(join(__dirname, "../templates/errors.html"));
   }
 });
 
@@ -258,7 +268,10 @@ router.post('/api/reset-password-now', async (req,res) => {
   } catch (error) {
     return res.status(500).json({
       success: false, 
-      message: "Something went wrong."
+      errors: [{
+        msg: "An error occurred."
+      }],
+      
     });
   };
 });
