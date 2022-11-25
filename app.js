@@ -4,6 +4,9 @@ import express from "express";
 import { engine } from 'express-handlebars';
 import mongoose from "mongoose";
 import passport from "passport";
+import path from "path";
+
+
 
 // Router Imports
 import userApis from "./apis/users";
@@ -24,6 +27,8 @@ app.set('views', './views');
 app.use(cors());
 app.use(express.json());
 app.use(passport.initialize());
+app.use('/assets', express.static(path.join(__dirname, '/public')));
+
 
 //  Require routes
 var homeRoutes = require('./routes/home');
