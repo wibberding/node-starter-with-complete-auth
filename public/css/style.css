@@ -1,22 +1,5 @@
-
-
-.flash-success {
-  background-color: blue;
+.flash {
+  background-color: pink;
   width: 100%;
   height: 40px;
-  display: none;
 };
-
-.flash-info {
-  background-color: grey;
-  width: 100%;
-  height: 40px;
-  display: none;
-}
-
-.flash-failure {
-  background-color: red;
-  width: 100%;
-  height: 40px;
-  display: none;
-}

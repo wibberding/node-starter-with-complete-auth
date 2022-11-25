@@ -7,9 +7,6 @@ import { userAuth } from "../middleware/auth-guard";
 import sendMail from "../functions/email-sender";
 import { AuthenticateValidations, RegisterValidations, ResetPassword } from "../validators/user-validators";
 import Validator from "../middleware/validator-middleware";
-// import { flatten } from "lodash";
-
-// import passport from "passport";
 
 const router = Router();
 
@@ -64,6 +61,7 @@ router.post(
         <a href="${DOMAIN}/users/verify-now/${user.verificationCode}">Verify Now</a>
       `;
       sendMail(user.email, "Verify Account", "Please verify your account.", html);
+      req.flash('info', 'Hurray! Your account is created. Please verify your email address.')
       return res.status(201).json({
         success: true,
         msg: "Hurray! Your account is created. Please verify your email address."

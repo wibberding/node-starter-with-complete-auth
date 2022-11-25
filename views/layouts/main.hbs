@@ -42,7 +42,11 @@
     </div>
   </div>
 </nav>
-<div class="flash"></div>
+{{#if infoMessage}}
+<div class="flash">{{infoMessage}}</div>
+{{/if}}
+
+
 <div class="container">
    {{{body}}}
 </div>

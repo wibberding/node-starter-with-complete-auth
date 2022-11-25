@@ -1,13 +1,15 @@
 import cors from "cors";
 import consola from "consola";
 import express from "express";
-import { engine } from 'express-handlebars';
+import { engine } from "express-handlebars";
+import cookieParser from "cookie-parser"
+import session from "express-session";
 import mongoose from "mongoose";
 import passport from "passport";
 import path from "path";
+import flash from "connect-flash";
 
-
-
+ 
 // Router Imports
 import userApis from "./apis/users";
 
@@ -16,6 +18,17 @@ require("./middleware/passport-middleware");
 
 // Initialize express application
 const app = express();
+
+
+app.use(cookieParser('keyboard kat'));
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}))
+app.use(flash());
+
 
 // Adds Handlebars
 app.engine('.hbs', engine({extname: '.hbs'}));

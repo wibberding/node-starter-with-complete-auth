@@ -60,7 +60,11 @@
     })
       .then((response) => response.json())
       .then((result) => {
-        console.log(result);
+        if(!result.success) {
+          alert(result.errors[0].msg)
+        } else {
+          window.location ="/";
+        };
     });
   };
   </script>
