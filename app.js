@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 import path from "path";
 import flash from "connect-flash";
+import headerAdder from "./middleware/header-adder";
 
  
 // Router Imports
@@ -39,6 +40,7 @@ app.set('views', './views');
 // Apply application middlewares
 app.use(cors());
 app.use(express.json());
+app.use(headerAdder);
 app.use(passport.initialize());
 app.use('/assets', express.static(path.join(__dirname, '/public')));
 
@@ -49,10 +51,10 @@ var notificationRoutes = require('./routes/notifications');
 var sessionRoutes = require('./routes/session');
 
 
+app.use('/session', sessionRoutes);
 //  Define routes...
 app.use('/', homeRoutes);
 app.use('/', notificationRoutes);
-app.use('/session', sessionRoutes);
 app.use("/users", userApis);
 
 

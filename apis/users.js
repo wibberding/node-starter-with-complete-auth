@@ -136,6 +136,7 @@ router.post('/api/authenticate', AuthenticateValidations, Validator, async(req, 
     };
 
     let token = await user.generateJWT();
+    request.cookies.token = token;
     return res.status(200).json({
       success: true,
       user: user.getUserInfo(),
