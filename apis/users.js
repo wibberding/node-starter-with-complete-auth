@@ -99,7 +99,7 @@ router.get('/verify-now/:verificationCode', async( req, res ) => {
     user.verified = true;
     user.verificationCode = undefined;
     await user.save();
-    return res.render('notifications/verification-success');
+    return res.render('session/verification-success');
 
   } catch (error) {
     return res.render('notifications/error');
@@ -136,7 +136,9 @@ router.post('/api/authenticate', AuthenticateValidations, Validator, async(req, 
     };
 
     let token = await user.generateJWT();
-    request.cookies.token = token;
+    // Set cookie in browser
+    res.cookie('token',token, { maxAge: 900000, httpOnly: true });
+    console.log('cookie created successfully', res.cookie);
     return res.status(200).json({
       success: true,
       user: user.getUserInfo(),

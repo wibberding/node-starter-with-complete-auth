@@ -23,7 +23,7 @@ const app = express();
 
 app.use(cookieParser('keyboard kat'));
 app.use(session({
-  secret: 'keyboard cat',
+  secret: 'keyboard kfasdfat',
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false }
@@ -51,11 +51,11 @@ var notificationRoutes = require('./routes/notifications');
 var sessionRoutes = require('./routes/session');
 
 
-app.use('/session', sessionRoutes);
 //  Define routes...
 app.use('/', homeRoutes);
 app.use('/', notificationRoutes);
 app.use("/users", userApis);
+app.use('/session', sessionRoutes);
 
 
 // Import application constants.
