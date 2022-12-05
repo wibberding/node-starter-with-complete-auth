@@ -3,7 +3,7 @@ import User from "../models/User";
 import { Router } from "express";
 import { randomBytes } from "crypto";
 import { DOMAIN } from "../constants";
-import { userAuth } from "../middleware/auth-guard";
+import { userAuth } from "../middleware/auth-check";
 import sendMail from "../functions/email-sender";
 import { AuthenticateValidations, RegisterValidations, ResetPassword } from "../validators/user-validators";
 import Validator from "../middleware/validator-middleware";
