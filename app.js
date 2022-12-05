@@ -14,8 +14,6 @@ import headerAdder from "./middleware/header-adder";
 // Router Imports
 import userApis from "./apis/users";
 
-// Import Passport middleware
-require("./middleware/passport-middleware");
 
 // Initialize express application
 const app = express();
@@ -36,12 +34,14 @@ app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 app.set('views', './views');
 
+app.use(passport.initialize());
+// Import Passport middleware
+require("./middleware/passport-middleware");
 
 // Apply application middlewares
 app.use(cors());
 app.use(express.json());
 app.use(headerAdder);
-app.use(passport.initialize());
 app.use('/assets', express.static(path.join(__dirname, '/public')));
 
 
@@ -49,13 +49,14 @@ app.use('/assets', express.static(path.join(__dirname, '/public')));
 var homeRoutes = require('./routes/home');
 var notificationRoutes = require('./routes/notifications');
 var sessionRoutes = require('./routes/session');
-
+var accountRoutes = require('./routes/account');
 
 //  Define routes...
 app.use('/', homeRoutes);
 app.use('/', notificationRoutes);
 app.use("/users", userApis);
 app.use('/session', sessionRoutes);
+app.use('/account', accountRoutes);
 
 
 // Import application constants.
