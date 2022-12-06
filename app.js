@@ -7,6 +7,7 @@ import session from "express-session";
 import mongoose from "mongoose";
 import path from "path";
 import flash from "connect-flash";
+import logger from "./middleware/logger";
 
 // Router Imports
 import userApis from "./apis/users";
@@ -35,6 +36,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/assets', express.static(path.join(__dirname, '/public')));
 
+app.use(logger);
 
 //  Require routes
 var homeRoutes = require('./routes/home');

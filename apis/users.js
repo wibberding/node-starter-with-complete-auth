@@ -139,12 +139,14 @@ router.post('/api/authenticate', AuthenticateValidations, Validator, async(req, 
     // Set cookie in browser
     res.cookie('token',token, { maxAge: 900000, httpOnly: true });
     console.log('cookie created successfully', res.cookie);
+    
     return res.status(200).json({
       success: true,
       user: user.getUserInfo(),
       token: `Bearer ${token}`,
       message: "Hurray! You are now logged in."
     });
+    
   } catch (error) {
     return res.status(500).json({
       success: false,

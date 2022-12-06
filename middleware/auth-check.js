@@ -1,9 +1,5 @@
-// import { Schema, model } from "mongoose";
-// import {compare, hash} from "bcryptjs";
 import { SECRET } from "../constants";
 import { verify } from "jsonwebtoken";
-// import { randomBytes} from "crypto";
-// import { pick } from "lodash";
 
 const userAuth = (req, res, next) => {
   console.log('Made it to auth check');
@@ -12,10 +8,14 @@ const userAuth = (req, res, next) => {
   try {
     var decoded = verify(token, SECRET);
     console.log("decoded", decoded);
+    req.user = decoded;
+    next();
   } catch(err) {
     console.log("error", err);
+    req.flash('info', 'Login failed. Please try again');
+	  res.render('session/login', {layout: 'main', infoMessage: req.flash('info'), errorMessage: req.flash('error')}); 
   }
-  next();
+  
 };
 
 export default userAuth;
