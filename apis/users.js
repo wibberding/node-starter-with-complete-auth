@@ -3,7 +3,7 @@ import User from "../models/User";
 import { Router } from "express";
 import { randomBytes } from "crypto";
 import { DOMAIN } from "../constants";
-import { userAuth } from "../middleware/auth-guard";
+import userAuth from "../middleware/auth-check";
 import sendMail from "../functions/email-sender";
 import { AuthenticateValidations, RegisterValidations, ResetPassword } from "../validators/user-validators";
 import Validator from "../middleware/validator-middleware";
@@ -138,14 +138,15 @@ router.post('/api/authenticate', AuthenticateValidations, Validator, async(req, 
     let token = await user.generateJWT();
     // Set cookie in browser
     res.cookie('token',token, { maxAge: 900000, httpOnly: true });
-    // res.cookie.token = token;
-  
+    console.log('cookie created successfully', res.cookie);
+    
     return res.status(200).json({
       success: true,
       user: user.getUserInfo(),
       token: `${token}`,
       message: "Hurray! You are now logged in."
     });
+    
   } catch (error) {
     return res.status(500).json({
       success: false,

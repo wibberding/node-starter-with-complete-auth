@@ -5,19 +5,15 @@ import { engine } from "express-handlebars";
 import cookieParser from "cookie-parser"
 import session from "express-session";
 import mongoose from "mongoose";
-import passport from "passport";
 import path from "path";
 import flash from "connect-flash";
-import headerAdder from "./middleware/header-adder";
+import logger from "./middleware/logger";
 
- 
 // Router Imports
 import userApis from "./apis/users";
 
-
 // Initialize express application
 const app = express();
-
 
 app.use(cookieParser('keyboard kat'));
 app.use(session({
@@ -41,9 +37,9 @@ require("./middleware/passport-middleware");
 // Apply application middlewares
 app.use(cors());
 app.use(express.json());
-app.use(headerAdder);
 app.use('/assets', express.static(path.join(__dirname, '/public')));
 
+app.use(logger);
 
 //  Require routes
 var homeRoutes = require('./routes/home');

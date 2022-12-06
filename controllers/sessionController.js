@@ -7,6 +7,8 @@ exports.login= (req, res, next) => {
 };
 
 exports.logout= (req, res, next) => {
+  req.user = null;
+  res.clearCookie('token');
   res.render('session/logout', {layout: 'main', infoMessage: req.flash('info'), errorMessage: req.flash('error')});
 };
 
