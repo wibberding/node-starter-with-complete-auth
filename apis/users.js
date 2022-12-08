@@ -139,7 +139,6 @@ router.post('/api/authenticate', AuthenticateValidations, Validator, async(req, 
     // Set cookie in browser
     res.cookie('token',token, { maxAge: 900000, httpOnly: true });
     console.log('cookie created successfully', res.cookie);
-    
     return res.status(200).json({
       success: true,
       user: user.getUserInfo(),

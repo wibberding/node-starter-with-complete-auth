@@ -8,7 +8,7 @@ const userAuth = (req, res, next) => {
   try {
     var decoded = verify(token, SECRET);
     console.log("decoded", decoded);
-    req.user = decoded;
+    req.session.user = decoded;
     next();
   } catch(err) {
     console.log("error", err);

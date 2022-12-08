@@ -2,6 +2,7 @@
 
 const logger = (req, res, next) => {
   console.log(req.session)
+  console.log("auth", req.authed);
   next();
 };
 

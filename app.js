@@ -1,13 +1,14 @@
 import cors from "cors";
 import consola from "consola";
 import express from "express";
-import { engine } from "express-handlebars";
+import { engine, create} from "express-handlebars";
 import cookieParser from "cookie-parser"
 import session from "express-session";
 import mongoose from "mongoose";
 import path from "path";
 import flash from "connect-flash";
 import logger from "./middleware/logger";
+
 
 // Router Imports
 import userApis from "./apis/users";
@@ -34,6 +35,7 @@ app.set('views', './views');
 app.use(cors());
 app.use(express.json());
 app.use('/assets', express.static(path.join(__dirname, '/public')));
+
 
 app.use(logger);
 
