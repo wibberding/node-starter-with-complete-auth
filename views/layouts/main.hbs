@@ -13,14 +13,17 @@
   {{> nav}}
 {{/if}}
 
-
 {{#if infoMessage}}
-<div class="flash">{{infoMessage}}</div>
+  <div class="flash">{{infoMessage}}</div>
+{{/if}}
+{{#if errorMessage}}
+  <div class="flash">{{errorMessage}}</div>
 {{/if}}
 
 
+
 <div class="container">
-  
+
 
 
    {{{body}}}
